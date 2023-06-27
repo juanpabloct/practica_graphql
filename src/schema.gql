@@ -1,0 +1,11 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Query {
+  """Resolver que trae la informacion de la tienda"""
+  tienda: String!
+
+  """Genera numeros aleatorios"""
+  Ramdom(to: Int = 10): Float!
+}
