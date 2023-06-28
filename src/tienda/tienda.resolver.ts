@@ -1,19 +1,23 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { NewTiendaInput, Tienda } from './inputs/tienda';
+import { NewTiendaInput, TiendaSchema } from './inputs/tienda';
 import { TiendaService } from './tienda.service';
+import { Tienda } from '@prisma/client';
 
 @Resolver()
 export class TiendaResolver {
   constructor(private readonly tiendaService: TiendaService) {}
-  @Query(() => [Tienda], { name: 'AllTiendas', description: 'Get all Tiendas' })
-  tiendas() {
-    return this.tiendaService.AllTiendas();
+  @Query(() => [TiendaSchema], {
+    name: 'AllTiendas',
+    description: 'Get all Tiendas',
+  })
+  async tiendas() {
+    return await this.tiendaService.getAllTiendas();
   }
-  @Mutation(() => Tienda, {
+  @Mutation(() => TiendaSchema, {
     name: 'newShop',
     description: 'Add new Shop',
   })
-  newTienda(@Args('newTienda') tienda: NewTiendaInput) {
-    return this.tiendaService.addShop(tienda);
+  async newTienda(@Args('newTienda') tienda: NewTiendaInput) {
+    return await this.tiendaService.addShop(tienda);
   }
 }
