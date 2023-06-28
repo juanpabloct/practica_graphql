@@ -1,14 +1,14 @@
 import { Field, InputType, ObjectType } from '@nestjs/graphql';
-import { IsString, Min, MinLength } from 'class-validator';
+import { IsString, MinLength } from 'class-validator';
 @ObjectType()
-export class Tienda {
+export class TiendaSchema {
   @Field(() => String)
-  tienda: string;
+  name: string;
 }
 @InputType()
 export class NewTiendaInput {
   @IsString()
   @MinLength(1)
   @Field(() => String)
-  tienda: string;
+  name: string;
 }
