@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:alpine
+    restart: always
+    ports:
+      - '${PORT_DB}:5432'
+    environment:
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${USER_NAME}
+    volumes:
+      - ./postgres:/var/lib/postgresql/data"
