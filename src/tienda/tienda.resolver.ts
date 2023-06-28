@@ -1,23 +1,19 @@
-import { Args, Float, Int, Query, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { NewTiendaInput, Tienda } from './inputs/tienda';
+import { TiendaService } from './tienda.service';
 
 @Resolver()
 export class TiendaResolver {
-  @Query(() => String, {
-    name: 'tienda',
-    description: 'Resolver que trae la informacion de la tienda',
-  })
-  Saluda(): string {
-    return 'ghfghfghfgh';
+  constructor(private readonly tiendaService: TiendaService) {}
+  @Query(() => [Tienda], { name: 'AllTiendas', description: 'Get all Tiendas' })
+  tiendas() {
+    return this.tiendaService.AllTiendas();
   }
-  @Query(() => Float, {
-    name: 'Ramdom',
-    description: 'Genera numeros aleatorios',
+  @Mutation(() => Tienda, {
+    name: 'newShop',
+    description: 'Add new Shop',
   })
-  RandomNumber(
-    @Args('to', { nullable: true, defaultValue: 10, type: () => Int })
-    number: number,
-  ): number {
-    const { random, floor } = Math;
-    return floor(random() * number);
+  newTienda(@Args('newTienda') tienda: NewTiendaInput) {
+    return this.tiendaService.addShop(tienda);
   }
 }
