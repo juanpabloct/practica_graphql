@@ -10,29 +10,29 @@ export class ProductosResolver {
     name: 'Products',
     description: 'Get all Products',
   })
-  allProducts(): Product[] {
+  allProducts() {
     return this.productSevice.allProducts();
   }
 
   @Query(() => Product, {
     name: 'Product',
-    description: 'Find product for id or name',
+    description: 'Find product for id',
   })
   product(
     @Args('param', {
       type: () => Int || String,
-      description: 'find one product for Id or Name',
+      description: 'find one product for Id ',
     })
-    param: number | string,
-  ): Product {
-    return this.productSevice.product(param);
+    id: number,
+  ) {
+    return this.productSevice.product(id);
   }
 
   @Mutation(() => Product, {
     name: 'NewProduct',
     description: 'Add new Product',
   })
-  newProduct(@Args('NewProductInput') newValue: NewProductInput): Product {
-    return this.productSevice.newProduct(newValue);
+  async newProduct(@Args('NewProductInput') newValue: NewProductInput) {
+    return await this.productSevice.newProduct(newValue);
   }
 }
