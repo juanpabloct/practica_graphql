@@ -10,6 +10,9 @@ dependencies:
   '@nestjs/common':
     specifier: ^10.0.3
     version: 10.0.3(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)(rxjs@7.8.1)
+  '@nestjs/config':
+    specifier: ^3.0.0
+    version: 3.0.0(@nestjs/common@10.0.3)(reflect-metadata@0.1.13)
   '@nestjs/core':
     specifier: ^10.0.3
     version: 10.0.3(@nestjs/common@10.0.3)(@nestjs/platform-express@10.0.3)(reflect-metadata@0.1.13)(rxjs@7.8.1)
@@ -19,6 +22,9 @@ dependencies:
   '@nestjs/platform-express':
     specifier: ^10.0.3
     version: 10.0.3(@nestjs/common@10.0.3)(@nestjs/core@10.0.3)
+  '@prisma/client':
+    specifier: ^4.16.1
+    version: 4.16.1(prisma@4.16.1)
   apollo-server-core:
     specifier: ^3.12.0
     version: 3.12.0(graphql@16.7.1)
@@ -1361,6 +1367,20 @@ packages:
       tslib: 2.5.3
       uid: 2.0.2
 
+  /@nestjs/config@3.0.0(@nestjs/common@10.0.3)(reflect-metadata@0.1.13):
+    resolution: {integrity: sha512-fzASk1Uv6AjdE6uA1na8zpqRCXAhRpcfgpCVv3SAKlgJ3VR3bEjcI4G17WHLgLBsmPzI1ofdkSI451WLD1F1Rw==}
+    peerDependencies:
+      '@nestjs/common': ^8.0.0 || ^9.0.0 || ^10.0.0
+      reflect-metadata: ^0.1.13
+    dependencies:
+      '@nestjs/common': 10.0.3(class-transformer@0.5.1)(class-validator@0.14.0)(reflect-metadata@0.1.13)(rxjs@7.8.1)
+      dotenv: 16.1.4
+      dotenv-expand: 10.0.0
+      lodash: 4.17.21
+      reflect-metadata: 0.1.13
+      uuid: 9.0.0
+    dev: false
+
   /@nestjs/core@10.0.3(@nestjs/common@10.0.3)(@nestjs/platform-express@10.0.3)(reflect-metadata@0.1.13)(rxjs@7.8.1):
     resolution: {integrity: sha512-LPZrUaGk9ZXXkOOoqNn2EwBN7bBV2+KKbNxkmJKZ/7wMO+qGE1hCLaYuwoPdwUEwmDMchFpUOydfMIeC1s/3bg==}
     requiresBuild: true
@@ -1536,10 +1556,27 @@ packages:
     transitivePeerDependencies:
       - encoding
 
+  /@prisma/client@4.16.1(prisma@4.16.1):
+    resolution: {integrity: sha512-CoDHu7Bt+NuDo40ijoeHP79EHtECsPBTy3yte5Yo3op8TqXt/kV0OT5OrsWewKvQGKFMHhYQ+ePed3zzjYdGAw==}
+    engines: {node: '>=14.17'}
+    requiresBuild: true
+    peerDependencies:
+      prisma: '*'
+    peerDependenciesMeta:
+      prisma:
+        optional: true
+    dependencies:
+      '@prisma/engines-version': 4.16.0-66.b20ead4d3ab9e78ac112966e242ded703f4a052c
+      prisma: 4.16.1
+    dev: false
+
+  /@prisma/engines-version@4.16.0-66.b20ead4d3ab9e78ac112966e242ded703f4a052c:
+    resolution: {integrity: sha512-tMWAF/qF00fbUH1HB4Yjmz6bjh7fzkb7Y3NRoUfMlHu6V+O45MGvqwYxqwBjn1BIUXkl3r04W351D4qdJjrgvA==}
+    dev: false
+
   /@prisma/engines@4.16.1:
     resolution: {integrity: sha512-gpZG0kGGxfemgvK/LghHdBIz+crHkZjzszja94xp4oytpsXrgt/Ice82MvPsWMleVIniKuARrowtsIsim0PFJQ==}
     requiresBuild: true
-    dev: true
 
   /@protobufjs/aspromise@1.1.2:
     resolution: {integrity: sha512-j+gKExEuLmKwvz3OgROXtrJ2UG2x8Ch2YZUxahh+s1F2HZ+wAceUNLkvy6zKCPVRkU++ZWQrdxsUeQXmcg4uoQ==}
@@ -2916,6 +2953,16 @@ packages:
     dependencies:
       esutils: 2.0.3
     dev: true
+
+  /dotenv-expand@10.0.0:
+    resolution: {integrity: sha512-GopVGCpVS1UKH75VKHGuQFqS1Gusej0z4FyQkPdwjil2gNIv+LNsqBlboOzpJFZKVT95GkCyWJbBSdFEFUWI2A==}
+    engines: {node: '>=12'}
+    dev: false
+
+  /dotenv@16.1.4:
+    resolution: {integrity: sha512-m55RtE8AsPeJBpOIFKihEmqUcoVncQIwo7x9U8ZwLEZw9ZpXboz2c+rvog+jUaJvVrZ5kBOeYQBX5+8Aa/OZQw==}
+    engines: {node: '>=12'}
+    dev: false
 
   /ee-first@1.1.1:
     resolution: {integrity: sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow==}
@@ -4871,7 +4918,6 @@ packages:
     requiresBuild: true
     dependencies:
       '@prisma/engines': 4.16.1
-    dev: true
 
   /process-nextick-args@2.0.1:
     resolution: {integrity: sha512-3ouUOpQhtgrbOa17J7+uxOTpITYWaGP7/AhoR3+A+/1e9skrzelGi/dXzEYyvbxubEF6Wn2ypscTKiKJFFn1ag==}
