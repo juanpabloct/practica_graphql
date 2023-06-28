@@ -12,14 +12,16 @@ datasource db {
 
 //Tables
 
-model productos {
+model Productos {
   idProducto Int      @id @unique @default(autoincrement())
   name       String
-  precio     String
+  precio     Int
   Bodega     Bodega[]
+
+  @@map("productos")
 }
 
-model tienda {
+model Tienda {
   idTienda Int      @id @unique @default(autoincrement())
   name     String
   Bodega   Bodega[]
@@ -27,9 +29,9 @@ model tienda {
 
 model Bodega {
   idBodega   Int       @id @unique @default(autoincrement())
-  producto   productos @relation(references: [idProducto], fields: [fkProducto])
+  producto   Productos @relation(references: [idProducto], fields: [fkProducto])
   fkProducto Int
-  tienda     tienda    @relation(references: [idTienda], fields: [fkTienda])
+  tienda     Tienda    @relation(references: [idTienda], fields: [fkTienda])
   fkTienda   Int
 }
 
@@ -41,7 +43,9 @@ model User {
   @@unique([idUser, email])
 }
 
-model factura {
+model Factura {
   compraId Int    @id @default(autoincrement())
   name     String
+
+  @@map("factura")
 }
