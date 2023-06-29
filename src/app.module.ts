@@ -31,6 +31,16 @@ import { ConfigModule } from '@nestjs/config';
           (module) => module.PrismaDbModule,
         ),
     ),
+    forwardRef(
+      async () =>
+        await import('./user/user.module').then((module) => module.UserModule),
+    ),
+    forwardRef(
+      async () =>
+        await import('./common/common.module').then(
+          (module) => module.CommonModule,
+        ),
+    ),
   ],
   controllers: [],
   providers: [],
