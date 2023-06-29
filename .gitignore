@@ -38,3 +38,4 @@ lerna-debug.log*
 schema.gql
 prisma/migrations
 .env
+postgres
