@@ -37,10 +37,8 @@ model Bodega {
 
 model User {
   idUser   Int    @id @default(autoincrement())
-  email    String
+  email    String @unique
   password String
-
-  @@unique([idUser, email])
 }
 
 model Factura {
