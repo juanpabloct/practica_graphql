@@ -1,24 +1,11 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
-import { CreateUserInput } from './dto/create-user.input';
-import { UpdateUserInput } from './dto/update-user.input';
+import { BadRequestException, Injectable, Logger } from '@nestjs/common';
+import { UpdateUserInput } from './dto/inputs/update-user.input';
 import { PrismaService } from 'src/prisma-db/prisma-db.service';
 
 @Injectable()
 export class UserService {
   constructor(private readonly prisma: PrismaService) {}
-  async create(createUserInput: CreateUserInput) {
-    try {
-      const newUser = await this.prisma.user.create({
-        data: {
-          ...createUserInput,
-        },
-      });
-      return newUser;
-    } catch (error) {
-      throw new BadRequestException({ message: error.message });
-    }
-  }
-
+  logger = new Logger();
   async findAll() {
     return await this.prisma.user.findMany({
       select: {
@@ -35,6 +22,20 @@ export class UserService {
       },
     });
   }
+  async findForEmail(email: string) {
+    try {
+      const user = await this.prisma.user.findUniqueOrThrow({
+        where: {
+          email,
+        },
+      });
+      return user;
+    } catch (error) {
+      throw new BadRequestException({
+        message: `Not fount user with email: ${email}`,
+      });
+    }
+  }
 
   async update(updateUser: UpdateUserInput) {
     return await this.prisma.user.update({
@@ -45,5 +46,8 @@ export class UserService {
 
   remove(id: number) {
     return `This action removes a #${id} user`;
+  }
+  ErrorUser(error: any) {
+    this.logger.error(error.message);
   }
 }
