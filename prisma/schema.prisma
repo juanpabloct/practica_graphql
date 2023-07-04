@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -10,15 +7,11 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-//Tables
-
 model Productos {
   idProducto Int      @id @unique @default(autoincrement())
   name       String
   precio     Int
   Bodega     Bodega[]
-
-  @@map("productos")
 }
 
 model Tienda {
@@ -29,21 +22,21 @@ model Tienda {
 
 model Bodega {
   idBodega   Int       @id @unique @default(autoincrement())
-  producto   Productos @relation(references: [idProducto], fields: [fkProducto])
   fkProducto Int
-  tienda     Tienda    @relation(references: [idTienda], fields: [fkTienda])
   fkTienda   Int
+  producto   Productos @relation(fields: [fkProducto], references: [idProducto])
+  tienda     Tienda    @relation(fields: [fkTienda], references: [idTienda])
 }
 
 model User {
   idUser   Int    @id @default(autoincrement())
   email    String @unique
   password String
+
+  @@unique([email, idUser])
 }
 
 model Factura {
   compraId Int    @id @default(autoincrement())
   name     String
-
-  @@map("factura")
 }
