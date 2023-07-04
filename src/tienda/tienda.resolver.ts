@@ -1,7 +1,6 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { NewTiendaInput, TiendaSchema } from './inputs/tienda';
 import { TiendaService } from './tienda.service';
-import { Tienda } from '@prisma/client';
 
 @Resolver()
 export class TiendaResolver {
