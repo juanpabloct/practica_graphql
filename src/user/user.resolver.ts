@@ -1,15 +1,15 @@
 import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
 import { UserService } from './user.service';
 import { UserWithoutPassword, User } from './entities/user.entity';
-import { CreateUserInput } from './dto/create-user.input';
-import { UpdateUserInput } from './dto/update-user.input';
-import { UsePipes } from '@nestjs/common';
+import { UpdateUserInput } from './dto/inputs/update-user.input';
+import { UseGuards, UsePipes } from '@nestjs/common';
 import { EncryptPasswordPipe } from 'src/common/encript-password/encrypt-password.pipe';
+import { JwtAuthGuard } from 'src/auth/guards/jwtGuard';
 
 @Resolver(() => User)
 export class UserResolver {
   constructor(private readonly userService: UserService) {}
-
+  @UseGuards(JwtAuthGuard)
   @Query(() => [UserWithoutPassword], { name: 'users' })
   async findAll() {
     return await this.userService.findAll();
@@ -18,13 +18,6 @@ export class UserResolver {
   @Query(() => User, { name: 'user' })
   async findOne(@Args('id', { type: () => Int }) id: number) {
     return await this.userService.findOne(id);
-  }
-
-  // Mutations
-  @UsePipes(EncryptPasswordPipe)
-  @Mutation(() => User)
-  async createUser(@Args('createUserInput') createUserInput: CreateUserInput) {
-    return await this.userService.create(createUserInput);
   }
 
   @UsePipes(EncryptPasswordPipe)
