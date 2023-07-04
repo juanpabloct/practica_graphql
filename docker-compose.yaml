@@ -10,13 +10,5 @@ services:
       - POSTGRES_PASSWORD=${DB_PASSWORD}
       - POSTGRES_DB=${DB_NAME}
       - POSTGRES_USER=${USER_NAME}
-    deploy:
-      resources:
-        limits:
-          cpus: '2'
-          memory: 200M
-        reservations:
-          cpus: '1'
-          memory: 200M
     volumes:
-      - ./postgres:/var/lib/postgresql/data
+      - ./postgres:/var/lib/postgresql/data"
