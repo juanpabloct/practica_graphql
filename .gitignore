@@ -39,3 +39,4 @@ schema.gql
 prisma/migrations
 .env
 postgres
+@generated

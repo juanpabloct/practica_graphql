@@ -10,15 +10,15 @@ export class UserService {
     return await this.prisma.user.findMany({
       select: {
         email: true,
-        idUser: true,
+        id: true,
       },
     });
   }
 
   async findOne(id: number) {
-    return await this.prisma.user.findUniqueOrThrow({
+    return this.prisma.user.findUniqueOrThrow({
       where: {
-        idUser: id,
+        id,
       },
     });
   }
@@ -27,6 +27,14 @@ export class UserService {
       const user = await this.prisma.user.findUniqueOrThrow({
         where: {
           email,
+        },
+        include: {
+          RolAnduser: {
+            include: {
+              RolAndPermiso: true,
+              User: true,
+            },
+          },
         },
       });
       return user;
@@ -39,7 +47,7 @@ export class UserService {
 
   async update(updateUser: UpdateUserInput) {
     return await this.prisma.user.update({
-      where: { idUser: updateUser.idUser },
+      where: { id: updateUser.id },
       data: updateUser,
     });
   }

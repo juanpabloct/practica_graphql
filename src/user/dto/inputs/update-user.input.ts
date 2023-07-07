@@ -13,7 +13,7 @@ export class UpdateUserInput {
   @Field(() => Int)
   @IsNumber()
   @IsPositive()
-  idUser: number;
+  id: number;
 
   @Field(() => String, { nullable: true })
   @IsEmail()

@@ -1,15 +1,21 @@
 import { InputType, Field } from '@nestjs/graphql';
-import { Transform } from 'class-transformer';
-import { IsString, MinLength } from 'class-validator';
+import { IsOptional } from 'class-validator';
+import { UserCreateWithoutRolAnduserInput } from 'src/@generated/prisma-nestjs-graphql/user/user-create-without-rol-anduser.input';
 
 @InputType()
-export class CreateUserInput {
-  @Field(() => String, { description: 'Column for email' })
-  @IsString()
-  @Transform(({ value }) => value.toLowerCase())
-  email: string;
-  @Field(() => String, { description: 'Column for Password' })
-  @IsString()
-  @MinLength(4)
-  password: string;
+export class CreateUserInput extends UserCreateWithoutRolAnduserInput {
+  @Field(() => String, {
+    description: 'Column for Rol',
+    defaultValue: 'User',
+    nullable: true,
+  })
+  @IsOptional()
+  Rol: string;
+  @Field(() => [String], {
+    description: 'Column for permisos',
+    defaultValue: ['edit', 'read', 'update'],
+    nullable: true,
+  })
+  @IsOptional()
+  permisos?: string[];
 }

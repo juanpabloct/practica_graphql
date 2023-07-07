@@ -9,5 +9,5 @@ export class SingInInput extends CreateUserInput {
   token: string;
   @Field(() => Int, { description: 'return Token ' })
   @IsNumber()
-  idUser: number;
+  id: number;
 }
