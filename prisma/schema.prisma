@@ -7,9 +7,9 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-//Generate 
-generator nestGraphql {
-  provider               = "node node_modules/prisma-nestjs-graphql"
+// Generate 
+generator nestgraphql {
+  provider               = "prisma-nestjs-graphql"
   output                 = "../src/@generated/prisma-nestjs-graphql"
   fields_Validator_from  = "class-validator"
   fields_Validator_input = true
