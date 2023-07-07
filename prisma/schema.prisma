@@ -7,20 +7,74 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+//Generate 
+generator nestGraphql {
+  provider               = "node node_modules/prisma-nestjs-graphql"
+  output                 = "../src/@generated/prisma-nestjs-graphql"
+  fields_Validator_from  = "class-validator"
+  fields_Validator_input = true
+}
+
+//Models person
+
+model User {
+  id         Int          @id @default(autoincrement())
+  /// @Validator.IsEmail()
+  email      String       @unique
+  /// @Validator.IsString()
+  /// @Validator.MinLength(7)
+  password   String
+  /// @Validator.IsOptional()
+  active     Boolean      @default(false)
+  RolAnduser RolAnduser[]
+}
+
+model Rol {
+  id               Int             @id @default(autoincrement())
+  /// @Validator.MinLength(1)
+  name             String          @unique
+  RolesAndPermisos RolAndPermiso[]
+}
+
+model RolAndPermiso {
+  id         Int          @id @default(autoincrement())
+  Rol        Rol?         @relation(fields: [fkRol], references: [id])
+  fkRol      Int?
+  permisoId  Int?
+  Permiso    Permiso?     @relation(fields: [permisoId], references: [id])
+  RolAnduser RolAnduser[]
+}
+
+model Permiso {
+  id               Int             @id @default(autoincrement())
+  name             String          @unique
+  RolesAndPermisos RolAndPermiso[]
+}
+
+model RolAnduser {
+  id              Int            @id @default(autoincrement())
+  User            User?          @relation(fields: [fkUser], references: [id])
+  fkUser          Int?
+  RolAndPermiso   RolAndPermiso? @relation(fields: [rolAndPermisoId], references: [id])
+  rolAndPermisoId Int?
+}
+
+//Models product Store and Bodega
+
 model Productos {
-  idProducto Int      @id @unique @default(autoincrement())
+  idProducto Int       @id @unique @default(autoincrement())
   name       String
   precio     Int
-  Bodega     Bodega[]
+  Bodega     Bodegas[]
 }
 
 model Tienda {
-  idTienda Int      @id @unique @default(autoincrement())
+  idTienda Int       @id @unique @default(autoincrement())
   name     String
-  Bodega   Bodega[]
+  Bodega   Bodegas[]
 }
 
-model Bodega {
+model Bodegas {
   idBodega   Int       @id @unique @default(autoincrement())
   fkProducto Int
   fkTienda   Int
@@ -28,15 +82,7 @@ model Bodega {
   tienda     Tienda    @relation(fields: [fkTienda], references: [idTienda])
 }
 
-model User {
-  idUser   Int    @id @default(autoincrement())
-  email    String @unique
-  password String
-
-  @@unique([email, idUser])
-}
-
-model Factura {
+model Facturas {
   compraId Int    @id @default(autoincrement())
   name     String
 }
