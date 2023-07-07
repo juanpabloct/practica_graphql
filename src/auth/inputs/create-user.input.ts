@@ -11,11 +11,4 @@ export class CreateUserInput extends UserCreateWithoutRolAnduserInput {
   })
   @IsOptional()
   Rol: string;
-  @Field(() => [String], {
-    description: 'Column for permisos',
-    defaultValue: ['edit', 'read', 'update'],
-    nullable: true,
-  })
-  @IsOptional()
-  permisos?: string[];
 }

@@ -11,6 +11,7 @@ import { EncryptPaswordService } from 'src/common/encryptPassword.service';
 import { PrismaService } from 'src/prisma-db/prisma-db.service';
 import { CreateUserInput } from 'src/auth/inputs/create-user.input';
 import { UserService } from 'src/user/user.service';
+import { RolAnduser } from 'src/@generated/prisma-nestjs-graphql/rol-anduser/rol-anduser.model';
 @Injectable()
 export class AuthService {
   constructor(
@@ -22,7 +23,7 @@ export class AuthService {
   ) {}
   logger = new Logger();
 
-  async SingUp({ Rol, email, password, permisos }: CreateUserInput) {
+  async SingUp({ Rol, email, password }: CreateUserInput): Promise<RolAnduser> {
     try {
       const newUser = await this.prisma.rolAnduser.create({
         data: {
