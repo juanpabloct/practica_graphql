@@ -1,5 +1,6 @@
-import { ObjectType, Field, Int } from '@nestjs/graphql';
-import { IsJWT, IsNumber } from 'class-validator';
+import { ObjectType, Field, Int, OmitType } from '@nestjs/graphql';
+import { IsJWT } from 'class-validator';
+import { User } from 'src/@generated/prisma-nestjs-graphql/user/user.model';
 
 @ObjectType()
 export class UserWithoutPassword {
@@ -11,16 +12,13 @@ export class UserWithoutPassword {
 }
 
 @ObjectType()
-export class User extends UserWithoutPassword {
+export class UserObject extends UserWithoutPassword {
   @Field(() => String, { description: 'Password of the user' })
   password: string;
 }
 @ObjectType()
-export class Login extends User {
+export class Login extends OmitType(User, ['password']) {
   @Field(() => String, { description: 'return Token ' })
   @IsJWT()
   token: string;
-  @Field(() => Int, { description: 'return Token ' })
-  @IsNumber()
-  idUser: number;
 }
