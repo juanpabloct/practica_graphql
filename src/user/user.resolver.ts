@@ -5,23 +5,25 @@ import { UpdateUserInput } from './dto/inputs/update-user.input';
 import { UseGuards, UsePipes } from '@nestjs/common';
 import { EncryptPasswordPipe } from 'src/common/encript-password/encrypt-password.pipe';
 import { JwtAuthGuard } from 'src/auth/guards/jwtGuard';
+import { User } from 'src/@generated/prisma-nestjs-graphql/user/user.model';
 
-@Resolver(() => UserObject)
+@Resolver(() => User)
 export class UserResolver {
   constructor(private readonly userService: UserService) {}
-  @UseGuards(JwtAuthGuard)
-  @Query(() => [UserWithoutPassword], { name: 'users' })
+  //@UseGuards(JwtAuthGuard)
+  @Query(() => [User], { name: 'users' })
   async findAll() {
-    return await this.userService.findAll();
+    const users =await this.userService.findAll();
+    return users
   }
 
-  @Query(() => UserObject, { name: 'user' })
+  @Query(() => User, { name: 'user' })
   async findOne(@Args('id', { type: () => Int }) id: number) {
     return await this.userService.findOne(id);
   }
 
   @UsePipes(EncryptPasswordPipe)
-  @Mutation(() => UserObject)
+  @Mutation(() => User)
   async updateUser(@Args('updateUser') update: UpdateUserInput) {
     return await this.userService.update(update);
   }

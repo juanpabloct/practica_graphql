@@ -5,6 +5,7 @@ import { EncryptPasswordPipe } from 'src/common/encript-password/encrypt-passwor
 import { CreateUserInput } from 'src/auth/inputs/create-user.input';
 import { Login } from 'src/user/entities/user.entity';
 import { RolAnduser } from 'src/@generated/prisma-nestjs-graphql/rol-anduser/rol-anduser.model';
+import { SingInInput } from './inputs/sing-in.input';
 
 @Resolver()
 export class AuthResolver {
@@ -17,8 +18,8 @@ export class AuthResolver {
     return newUser;
   }
   @Mutation(() => Login)
-  async singIn(@Args('singIn') createUserInput: CreateUserInput) {
-    const session = await this.authService.SingIn(createUserInput);
+  async singIn(@Args('singIn') singIn: SingInInput) {
+    const session = await this.authService.SingIn(singIn);
     return session;
   }
 }

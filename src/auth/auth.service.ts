@@ -12,6 +12,7 @@ import { PrismaService } from 'src/prisma-db/prisma-db.service';
 import { CreateUserInput } from 'src/auth/inputs/create-user.input';
 import { UserService } from 'src/user/user.service';
 import { RolAnduser } from 'src/@generated/prisma-nestjs-graphql/rol-anduser/rol-anduser.model';
+import { SingInInput } from './inputs/sing-in.input';
 @Injectable()
 export class AuthService {
   constructor(
@@ -29,8 +30,8 @@ export class AuthService {
         data: {
           User: {
             create: {
-              email: email,
-              password: password,
+              email,
+              password,
             },
           },
           RolAndPermiso: {
@@ -54,7 +55,6 @@ export class AuthService {
             include: {
               Permiso: true,
               Rol: true,
-              RolAnduser: true,
             },
           },
         },
@@ -64,20 +64,31 @@ export class AuthService {
       throw new BadRequestException({ message: error.message });
     }
   }
-
-  async SingIn({ email, password }: CreateUserInput) {
+  async SingIn({ email, password }: SingInInput) {
     try {
+
       const { password: passwordEmail, ...infoUser } =
         await this.userService.findForEmail(email);
-      console.log(infoUser);
-
+        if (!infoUser.active) {
+          
+          const {active}=await this.prisma.user.update({data:{
+            active:true
+          },
+          where:{
+            id:infoUser.id
+          }, select:{
+            active:true
+          }
+        })
+        infoUser.active=active
+      }
       const validatePassword = await this.passwordService.EqualPassword(
         password,
         passwordEmail,
       );
       if (validatePassword) {
         const tokenGenerate = this.jwt.sign(infoUser);
-        return { password: passwordEmail, ...infoUser, token: tokenGenerate };
+        return { password: passwordEmail, ...infoUser, token: tokenGenerate,  };
       } else {
         throw new BadRequestException('Credentiasl are incorrects');
       }

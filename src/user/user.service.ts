@@ -7,11 +7,10 @@ export class UserService {
   constructor(private readonly prisma: PrismaService) {}
   logger = new Logger();
   async findAll() {
-    return await this.prisma.user.findMany({
-      select: {
-        email: true,
-        id: true,
-      },
+    return  this.prisma.user.findMany({
+      include:{
+        _count:true
+      }
     });
   }
 
@@ -20,11 +19,14 @@ export class UserService {
       where: {
         id,
       },
+      include:{
+        _count:true
+      }
     });
   }
   async findForEmail(email: string) {
     try {
-      const user = await this.prisma.user.findUniqueOrThrow({
+      return  await this.prisma.user.findUniqueOrThrow({
         where: {
           email,
         },
@@ -35,9 +37,9 @@ export class UserService {
               User: true,
             },
           },
+          _count:true
         },
       });
-      return user;
     } catch (error) {
       throw new BadRequestException({
         message: `Not fount user with email: ${email}`,
@@ -55,7 +57,7 @@ export class UserService {
   remove(id: number) {
     return `This action removes a #${id} user`;
   }
-  ErrorUser(error: any) {
+  ErrorUser(error) {
     this.logger.error(error.message);
   }
 }

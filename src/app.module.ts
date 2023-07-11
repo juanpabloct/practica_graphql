@@ -5,11 +5,8 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
 import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
-import { ProductosModule } from './productos/productos.module';
 import { PrismaDbModule } from './prisma-db/prisma-db.module';
-import { UserModule } from './user/user.module';
 import { CommonModule } from './common/common.module';
-import { TiendaModule } from './tienda/tienda.module';
 @Module({
   imports: [
     ConfigModule.forRoot(),
@@ -19,12 +16,14 @@ import { TiendaModule } from './tienda/tienda.module';
       autoSchemaFile: join(process.cwd(), './schema.gql'),
       plugins: [ApolloServerPluginLandingPageLocalDefault()],
     }),
-    TiendaModule,
-    ProductosModule,
-    UserModule,
+    //TiendaModule,
+    forwardRef(async()=>(await import("./tienda/tienda.module")).TiendaModule),
+    //ProductosModule,
+    forwardRef(async()=>(await import("./productos/productos.module")).ProductosModule),
+    //UserModule,
+    forwardRef(async()=>(await import("./user/user.module")).UserModule),
     CommonModule,
     PrismaDbModule,
-
     //Module of the autentication
     AuthModule,
   ],
