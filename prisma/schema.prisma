@@ -78,6 +78,7 @@ model Bodegas {
   idBodega   Int       @id @unique @default(autoincrement())
   fkProducto Int
   fkTienda   Int
+  cantidad   Int       @default(0)
   producto   Productos @relation(fields: [fkProducto], references: [idProducto])
   tienda     Tienda    @relation(fields: [fkTienda], references: [idTienda])
 }
