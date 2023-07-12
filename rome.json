@@ -2,17 +2,25 @@
   "formatter": {
     "enabled": true,
     "indentStyle": "tab",
-    "lineWidth": 120
+    "lineWidth": 120,
+    "ignore":["./src/@generated"]
   },
   "linter": {
     "enabled": true,
     "rules": {
-      "recommended": true
-    }
+      "recommended": true,
+      "correctness":{
+        "recommended": true
+      },
+      "performance":{
+        "recommended": true
+      }
+    },
+    "ignore":["./src/@generated"]
   },
   "javascript": {
     "formatter": {
-      "semicolons": "always",
+      "semicolons": "asNeeded",
       "quoteStyle": "single",
       "trailingComma": "all"
     }
