@@ -1,16 +1,16 @@
-import { UpdateUserInput } from './dto/inputs/update-user.input';
-import { BadRequestException, Injectable, Logger } from '@nestjs/common';
+import { UpdateUserInput } from './dto/inputs/update-user.input'
+import { BadRequestException, Injectable, Logger } from '@nestjs/common'
 
-import { PrismaService } from 'src/prisma-db/prisma-db.service';
+import { PrismaService } from 'src/prisma-db/prisma-db.service'
 
 @Injectable()
 export class UserService {
 	constructor(private readonly prisma: PrismaService) {}
-	logger = new Logger();
+	logger = new Logger()
 	async findAll() {
 		return this.prisma.user.findMany({
 			include: { _count: true },
-		});
+		})
 	}
 
 	async findOne(id: number) {
@@ -21,7 +21,7 @@ export class UserService {
 			include: {
 				_count: true,
 			},
-		});
+		})
 	}
 
 	async findForEmail(email: string) {
@@ -39,12 +39,12 @@ export class UserService {
 					},
 					_count: true,
 				},
-			});
+			})
 		} catch (error) {
-			this.ErrorUser(error);
+			this.ErrorUser(error)
 			throw new BadRequestException({
 				message: `Not fount user with email: ${email}`,
-			});
+			})
 		}
 	}
 
@@ -52,13 +52,13 @@ export class UserService {
 		return await this.prisma.user.update({
 			where: { id: updateUser.id },
 			data: updateUser,
-		});
+		})
 	}
 
 	remove(id: number) {
-		return `This action removes a #${id} user`;
+		return `This action removes a #${id} user`
 	}
 	ErrorUser(error) {
-		this.logger.error(error.message);
+		this.logger.error(error.message)
 	}
 }
