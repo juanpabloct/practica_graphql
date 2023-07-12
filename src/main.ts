@@ -16,7 +16,7 @@ async function bootstrap() {
 	)
 	const prismaService = app.get(PrismaService)
 	await prismaService.enableShutdownHooks(app)
-	await app.register(compression, { encodings: ['gzip', 'deflate'], global: true, threshold: 300 })
+	await app.register(compression, { encodings: ['br'], global: true, threshold: 300 })
 	await app.listen(3000)
 }
 bootstrap()
