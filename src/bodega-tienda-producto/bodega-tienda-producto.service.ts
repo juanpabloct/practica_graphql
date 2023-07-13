@@ -1,18 +1,14 @@
-import { PrismaService } from '../prisma-db/prisma-db.service';
-import { CreateBodegaTiendaProductoInput } from './dto/create-bodega-tienda-producto.input';
-import { UpdateBodegaTiendaProductoInput } from './dto/update-bodega-tienda-producto.input';
-import { Injectable, Logger } from '@nestjs/common';
-import { Info } from '@nestjs/graphql';
-import { BodegaTiendaProducto } from '@prisma/client';
-import { BodegaTiendaProductoAvgAggregateInput } from 'src/@generated/prisma-nestjs-graphql/bodega-tienda-producto/bodega-tienda-producto-avg-aggregate.input';
-import { BodegaTiendaProductoMaxAggregate } from 'src/@generated/prisma-nestjs-graphql/bodega-tienda-producto/bodega-tienda-producto-max-aggregate.output';
+import { PrismaService } from '../prisma-db/prisma-db.service'
+import { CreateBodegaTiendaProductoInput } from './dto/create-bodega-tienda-producto.input'
+import { UpdateBodegaTiendaProductoInput } from './dto/update-bodega-tienda-producto.input'
+import { Injectable, Logger } from '@nestjs/common'
 
 @Injectable()
 export class BodegaTiendaProductoService {
 	constructor(private prisma: PrismaService) {}
-	logger = new Logger();
+	logger = new Logger()
 
-	entidad = this.prisma.bodegaTiendaProducto;
+	entidad = this.prisma.bodegaTiendaProducto
 	async create({ bodega, cantidad, nameProduct, tienda }: CreateBodegaTiendaProductoInput) {
 		try {
 			const findProducto = await this.prisma.productos.findUniqueOrThrow({
@@ -22,7 +18,7 @@ export class BodegaTiendaProductoService {
 				select: {
 					idProducto: true,
 				},
-			});
+			})
 			const findTienda = await this.prisma.tienda.findUniqueOrThrow({
 				where: {
 					name: tienda,
@@ -30,7 +26,7 @@ export class BodegaTiendaProductoService {
 				select: {
 					id: true,
 				},
-			});
+			})
 			const findBodega = await this.prisma.bodega.findUniqueOrThrow({
 				where: {
 					name: bodega,
@@ -38,7 +34,7 @@ export class BodegaTiendaProductoService {
 				select: {
 					id: true,
 				},
-			});
+			})
 			return this.entidad.create({
 				data: {
 					bodegaId: findBodega.id,
@@ -46,14 +42,14 @@ export class BodegaTiendaProductoService {
 					fkProducto: findProducto.idProducto,
 					fkTienda: findTienda.id,
 				},
-			});
+			})
 		} catch (error) {
-			this.error(error);
+			this.error(error)
 		}
 	}
 
 	async findAll() {
-		return this.entidad.findMany();
+		return this.entidad.findMany()
 	}
 
 	async findOne(id: number) {
@@ -61,18 +57,28 @@ export class BodegaTiendaProductoService {
 			where: {
 				id,
 			},
-		});
+		})
 	}
 
-	update(id: number, updateBodegaTiendaProductoInput: UpdateBodegaTiendaProductoInput) {
-		return `This action updates a #${id} bodegaTiendaProducto`;
+	async update(id: number, updateBodegaTiendaProductoInput: UpdateBodegaTiendaProductoInput) {
+		return await this.entidad.update({
+			data: {
+				bodegaId: 2,
+				fkProducto: 1,
+				fkTienda: 1,
+				cantidad: 1000,
+			},
+			where: {
+				id,
+			},
+		})
 	}
 
 	remove(id: number) {
-		return `This action removes a #${id} bodegaTiendaProducto`;
+		return `This action removes a #${id} bodegaTiendaProducto`
 	}
 
 	error(error) {
-		return this.logger.error(error);
+		return this.logger.error(error)
 	}
 }
