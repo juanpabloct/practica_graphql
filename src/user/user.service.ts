@@ -1,5 +1,5 @@
 import { UpdateUserInput } from './dto/inputs/update-user.input'
-import { BadRequestException, Injectable, Logger } from '@nestjs/common'
+import { BadRequestException, HttpStatus, Injectable, Logger, NotFoundException } from '@nestjs/common'
 
 import { PrismaService } from 'src/prisma-db/prisma-db.service'
 
@@ -14,7 +14,7 @@ export class UserService {
 	}
 
 	async findOne(id: number) {
-		return this.prisma.user.findUniqueOrThrow({
+		const user = await this.prisma.user.findUnique({
 			where: {
 				id,
 			},
@@ -22,6 +22,12 @@ export class UserService {
 				_count: true,
 			},
 		})
+		if (user) {
+			return user
+		} else {
+			this.ErrorUser({ message: 'User not Found' })
+			throw new NotFoundException('User not Found')
+		}
 	}
 
 	async findForEmail(email: string) {
@@ -42,9 +48,6 @@ export class UserService {
 			})
 		} catch (error) {
 			this.ErrorUser(error)
-			throw new BadRequestException({
-				message: `Not fount user with email: ${email}`,
-			})
 		}
 	}
 
