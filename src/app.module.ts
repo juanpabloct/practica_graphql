@@ -1,11 +1,13 @@
-import { AuthModule } from './auth/auth.module';
-import { PrismaDbModule } from './prisma-db/prisma-db.module';
-import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
-import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import { Module, forwardRef } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
-import { GraphQLModule } from '@nestjs/graphql';
-import { join } from 'path';
+import { AuthModule } from './auth/auth.module'
+import { PermisosModule } from './permisos/permisos.module'
+import { PrismaDbModule } from './prisma-db/prisma-db.module'
+import { RolModule } from './rol/rol.module'
+import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default'
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo'
+import { Module, forwardRef } from '@nestjs/common'
+import { ConfigModule } from '@nestjs/config'
+import { GraphQLModule } from '@nestjs/graphql'
+import { join } from 'path'
 @Module({
 	imports: [
 		ConfigModule.forRoot(),
@@ -29,6 +31,8 @@ import { join } from 'path';
 		forwardRef(
 			async () => (await import('./bodega-tienda-producto/bodega-tienda-producto.module')).BodegaTiendaProductoModule,
 		),
+		PermisosModule,
+		RolModule,
 		//BodegaTiendaProductoModule,
 	],
 	controllers: [],
