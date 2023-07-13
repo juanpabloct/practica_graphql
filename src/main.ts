@@ -4,7 +4,7 @@ import compression from '@fastify/compress'
 import { ValidationPipe } from '@nestjs/common'
 import { NestFactory } from '@nestjs/core'
 import { FastifyAdapter, NestFastifyApplication } from '@nestjs/platform-fastify'
-
+declare const module
 async function bootstrap() {
 	const app = await NestFactory.create<NestFastifyApplication>(AppModule, new FastifyAdapter())
 
@@ -18,5 +18,9 @@ async function bootstrap() {
 	await prismaService.enableShutdownHooks(app)
 	await app.register(compression, { encodings: ['br'], global: true, threshold: 300 })
 	await app.listen(3000)
+	if (module.hot) {
+		module.hot.accept()
+		module.hot.dispose(() => app.close())
+	}
 }
 bootstrap()
