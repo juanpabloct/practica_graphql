@@ -16,7 +16,7 @@ export class BodegaTiendaProductoService {
 					name: nameProduct,
 				},
 				select: {
-					idProducto: true,
+					id: true,
 				},
 			})
 			const findTienda = await this.prisma.tienda.findUniqueOrThrow({
@@ -39,8 +39,8 @@ export class BodegaTiendaProductoService {
 				data: {
 					bodegaId: findBodega.id,
 					cantidad,
-					fkProducto: findProducto.idProducto,
-					fkTienda: findTienda.id,
+					productoId: findProducto.id,
+					tiendaId: findTienda.id,
 				},
 			})
 		} catch (error) {
@@ -64,8 +64,8 @@ export class BodegaTiendaProductoService {
 		return await this.entidad.update({
 			data: {
 				bodegaId: 2,
-				fkProducto: 1,
-				fkTienda: 1,
+				productoId: 1,
+				tiendaId: 1,
 				cantidad: 1000,
 			},
 			where: {
