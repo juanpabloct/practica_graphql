@@ -34,17 +34,17 @@ model Rol {
   /// @Validator.MinLength(1)
   name             String          @unique
   RolesAndPermisos RolAndPermiso[]
+  RolAnduser       RolAnduser[]
 }
 
 model RolAndPermiso {
-  id         Int          @id @default(autoincrement())
-  Rol        Rol?         @relation(fields: [fkRol], references: [id])
+  id        Int      @id @default(autoincrement())
+  Rol       Rol?     @relation(fields: [rolId], references: [id])
   ///@Validator.IsNumber()
-  fkRol      Int?
+  rolId     Int?
   ///@Validator.IsNumber()
-  permisoId  Int?
-  Permiso    Permiso?     @relation(fields: [permisoId], references: [id])
-  RolAnduser RolAnduser[]
+  permisoId Int?
+  Permiso   Permiso? @relation(fields: [permisoId], references: [id])
 }
 
 model Permiso {
@@ -56,23 +56,24 @@ model Permiso {
 }
 
 model RolAnduser {
-  id              Int            @id @default(autoincrement())
-  User            User?          @relation(fields: [fkUser], references: [id])
-  fkUser          Int?
-  RolAndPermiso   RolAndPermiso? @relation(fields: [rolAndPermisoId], references: [id])
-  rolAndPermisoId Int?
+  id     Int  @id @default(autoincrement())
+  User   User @relation(fields: [userId], references: [id])
+  userId Int
+  rol    Rol  @relation(fields: [rolId], references: [id])
+  rolId  Int
 }
 
 //Models product Store and Bodega
 
 model Productos {
-  idProducto   Int                    @id @unique @default(autoincrement())
+  id           Int                    @id @unique @default(autoincrement())
   /// @Validator.MinLength(3)
   /// @Validator.IsString()
   name         String                 @unique
   /// @Validator.IsNumber()
   precio       Int
   BodegaTienda BodegaTiendaProducto[]
+  Venta        Venta[]
 }
 
 model Tienda {
@@ -93,16 +94,25 @@ model Bodega {
 
 model BodegaTiendaProducto {
   id         Int       @id @unique @default(autoincrement())
-  fkProducto Int
-  fkTienda   Int
+  productoId Int
+  tiendaId   Int
   cantidad   Int       @default(0)
-  producto   Productos @relation(fields: [fkProducto], references: [idProducto])
-  tienda     Tienda    @relation(fields: [fkTienda], references: [id])
-  Bodega     Bodega?   @relation(fields: [bodegaId], references: [id])
-  bodegaId   Int?
+  producto   Productos @relation(fields: [productoId], references: [id])
+  tienda     Tienda    @relation(fields: [tiendaId], references: [id])
+  Bodega     Bodega    @relation(fields: [bodegaId], references: [id])
+  bodegaId   Int
 }
 
 model Facturas {
-  id   Int    @id @default(autoincrement())
-  name String
+  id    Int     @id @default(autoincrement())
+  name  String
+  Venta Venta[]
+}
+
+model Venta {
+  id          Int       @id @default(autoincrement())
+  facturaId   Facturas? @relation(fields: [facturasId], references: [id])
+  facturasId  Int?
+  productoId  Productos @relation(fields: [productosId], references: [id])
+  productosId Int
 }
