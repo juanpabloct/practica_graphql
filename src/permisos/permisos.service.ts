@@ -12,11 +12,18 @@ export class PermisosService {
 		return this.entiti.create({ data: { name: createPermisoInput.name } })
 	}
 	async createMany(createPermisoInput: CreateManyPermisosInput) {
-		const permisos = await this.entiti.createMany({ data: createPermisoInput.data, skipDuplicates: true })
-		return createPermisoInput.data.map(async (values) => {
-			const findForName = await this.findOneName(values.name)
-			return findForName
-		})
+		return this.entiti
+			.createMany({
+				data: createPermisoInput.data.map((data) => ({
+					name: data,
+				})),
+				skipDuplicates: true,
+			})
+			.then(async () => {
+				return await createPermisoInput.data.map(async (values) => {
+					return await this.findOneName(values)
+				})
+			})
 	}
 
 	async findAll() {
