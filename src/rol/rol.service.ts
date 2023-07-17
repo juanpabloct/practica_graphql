@@ -1,26 +1,44 @@
-import { Injectable } from '@nestjs/common';
-import { CreateRolInput } from './dto/create-rol.input';
-import { UpdateRolInput } from './dto/update-rol.input';
+import { CreateRolInput } from './dto/create-rol.input'
+import { UpdateRolInput } from './dto/update-rol.input'
+import { Injectable } from '@nestjs/common'
+import { RolCreateWithoutRolesAndPermisosInput } from 'src/@generated/prisma-nestjs-graphql/rol/rol-create-without-roles-and-permisos.input'
+import { PrismaService } from 'src/prisma-db/prisma-db.service'
 
 @Injectable()
 export class RolService {
-  create(createRolInput: CreateRolInput) {
-    return 'This action adds a new rol';
-  }
+	constructor(private readonly prisma: PrismaService) {}
+	entiti = this.prisma.rol
+	async create(name: string) {
+		return this.entiti.create({ data: { name } })
+	}
 
-  findAll() {
-    return `This action returns all rol`;
-  }
+	async findAll() {
+		return this.entiti.findMany()
+	}
 
-  findOne(id: number) {
-    return `This action returns a #${id} rol`;
-  }
+	async findOne(id: number) {
+		return this.entiti.findUnique({
+			where: {
+				id,
+			},
+		})
+	}
 
-  update(id: number, updateRolInput: UpdateRolInput) {
-    return `This action updates a #${id} rol`;
-  }
+	async update(id: number, { name }: UpdateRolInput) {
+		return this.entiti.update({
+			where: { id },
+			data: {
+				name,
+			},
+		})
+	}
 
-  remove(id: number) {
-    return `This action removes a #${id} rol`;
-  }
+	async remove(id: number) {
+		return this.entiti.delete({
+			where: { id },
+			include: {
+				RolesAndPermisos: true,
+			},
+		})
+	}
 }
