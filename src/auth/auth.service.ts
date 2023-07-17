@@ -1,7 +1,6 @@
+import { SingInInput } from './inputs/sing-in.input'
 import { BadRequestException, Inject, Injectable, Logger, NotFoundException, forwardRef } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
-
-import { SingInInput } from './inputs/sing-in.input'
 import { RolAnduser } from 'src/@generated/prisma-nestjs-graphql/rol-anduser/rol-anduser.model'
 import { CreateUserInput } from 'src/auth/inputs/create-user.input'
 import { EncryptPaswordService } from 'src/common/encryptPassword.service'
