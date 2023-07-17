@@ -1,21 +1,21 @@
-import { Product } from './entities/products.entities';
-import { NewProductInput } from './input/newProduct';
-import { ProductosService } from './productos.service';
-import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Product } from './entities/products.entities'
+import { NewProductInput } from './input/newProduct'
+import { ProductosService } from './productos.service'
+import { Args, Int, Mutation, Query, Resolver } from '@nestjs/graphql'
 
 @Resolver()
 export class ProductosResolver {
 	constructor(private readonly productSevice: ProductosService) {}
 	@Query(() => [Product], {
-		name: 'Products',
+		name: 'products',
 		description: 'Get all Products',
 	})
 	allProducts() {
-		return this.productSevice.allProducts();
+		return this.productSevice.allProducts()
 	}
 
 	@Query(() => Product, {
-		name: 'Product',
+		name: 'product',
 		description: 'Find product for id',
 	})
 	product(
@@ -25,14 +25,14 @@ export class ProductosResolver {
     })
 		id: number,
 	) {
-		return this.productSevice.product(id);
+		return this.productSevice.product(id)
 	}
 
 	@Mutation(() => Product, {
-		name: 'NewProduct',
+		name: 'newProduct',
 		description: 'Add new Product',
 	})
-	async newProduct(@Args('NewProductInput') newValue: NewProductInput) {
-		return await this.productSevice.newProduct(newValue);
+	async newProduct(@Args('newProductInput') newValue: NewProductInput) {
+		return await this.productSevice.newProduct(newValue)
 	}
 }
