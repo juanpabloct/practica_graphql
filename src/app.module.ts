@@ -8,6 +8,7 @@ import { Module, forwardRef } from '@nestjs/common'
 import { ConfigModule } from '@nestjs/config'
 import { GraphQLModule } from '@nestjs/graphql'
 import { join } from 'path'
+import { RolAndPermisosModule } from './rol-and-permisos/rol-and-permisos.module';
 @Module({
 	imports: [
 		ConfigModule.forRoot(),
@@ -33,6 +34,7 @@ import { join } from 'path'
 		),
 		PermisosModule,
 		RolModule,
+		RolAndPermisosModule,
 		//BodegaTiendaProductoModule,
 	],
 	controllers: [],
