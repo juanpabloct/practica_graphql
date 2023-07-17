@@ -1,16 +1,9 @@
 import { Field, InputType } from '@nestjs/graphql'
-import { IsArray, IsString } from 'class-validator'
-
-@InputType()
-export class PermisoUser {
-	@Field(() => String, { description: 'Name' })
-	@IsString()
-	name: string
-}
+import { IsArray } from 'class-validator'
 
 @InputType()
 export class CreateManyPermisosInput {
-	@Field(() => [PermisoUser], { description: 'Array of permisos' })
+	@Field(() => [String], { description: 'Array of permisos' })
 	@IsArray()
-	data: PermisoUser[]
+	data: string[]
 }
