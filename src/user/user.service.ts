@@ -1,5 +1,5 @@
 import { UpdateUserInput } from './dto/inputs/update-user.input'
-import { BadRequestException, HttpStatus, Injectable, Logger, NotFoundException } from '@nestjs/common'
+import { Injectable, Logger, NotFoundException } from '@nestjs/common'
 
 import { PrismaService } from 'src/prisma-db/prisma-db.service'
 
@@ -9,7 +9,12 @@ export class UserService {
 	logger = new Logger()
 	async findAll() {
 		return this.prisma.user.findMany({
-			include: { _count: true },
+			include: {
+				_count: true,
+				RolAnduser: {
+					include: { rol: true, User: true },
+				},
+			},
 		})
 	}
 
@@ -19,6 +24,7 @@ export class UserService {
 				id,
 			},
 			include: {
+				RolAnduser: true,
 				_count: true,
 			},
 		})
@@ -39,7 +45,7 @@ export class UserService {
 				include: {
 					RolAnduser: {
 						include: {
-							RolAndPermiso: true,
+							rol: true,
 							User: true,
 						},
 					},
