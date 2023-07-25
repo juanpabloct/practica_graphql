@@ -6,7 +6,7 @@ import { PrismaService } from 'src/prisma-db/prisma-db.service'
 
 @Injectable()
 export class RolService {
-	constructor(private readonly prisma: PrismaService) {}
+	constructor(private readonly prisma: PrismaService) { }
 	entiti = this.prisma.rol
 	async create(name: string) {
 		return this.entiti.create({ data: { name } })

@@ -7,7 +7,7 @@ import { RolAndPermiso } from 'src/@generated/prisma-nestjs-graphql/rol-and-perm
 
 @Resolver(() => RolAndPermisoObject)
 export class RolAndPermisosResolver {
-	constructor(private readonly rolAndPermisosService: RolAndPermisosService) {}
+	constructor(private readonly rolAndPermisosService: RolAndPermisosService) { }
 
 	@Mutation(() => [RolAndPermiso])
 	async createRolAndPermiso(
