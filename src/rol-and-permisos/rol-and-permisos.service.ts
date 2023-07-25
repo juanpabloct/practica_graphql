@@ -5,35 +5,8 @@ import { PrismaService } from 'src/prisma-db/prisma-db.service'
 
 @Injectable()
 export class RolAndPermisosService {
-	constructor(private readonly db: PrismaService) {}
+	constructor(private readonly db: PrismaService) { }
 	entiti = this.db.rolAndPermiso
-	private async structureData({ name, permisos }: CreateRolAndPermisoInput) {
-		const rol = await this.db.rol.findUnique({
-			where: { name: name },
-			select: {
-				id: true,
-			},
-		})
-
-		if (rol) {
-			const permisoId = async (name: string) => {
-				const permiso = await this.db.permiso.findUnique({ where: { name }, select: { id: true } })
-				if (!permiso) {
-					throw new NotFoundException('Not found permise')
-				}
-				return permiso
-			}
-			const data = await Promise.all(
-				permisos.map(async (permiso) => {
-					const permidoId = (await permisoId(permiso)).id
-					return { rolId: rol.id, permisoId: permidoId }
-				}),
-			)
-			return { data, rolId: rol.id }
-		} else {
-			throw new NotFoundException("Rol Doesn't exist")
-		}
-	}
 	async createOne({ name, permiso }: CreateRolAndPermisoOneInput) {
 		const findPermisoRol = await this.entiti.findFirst({
 			where: { Permiso: { name: permiso }, Rol: { name } },
