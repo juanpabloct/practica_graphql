@@ -10,28 +10,24 @@ import { JwtModule } from '@nestjs/jwt';
 import { CommonModule } from 'src/common/common.module';
 import { PrismaDbModule } from 'src/prisma-db/prisma-db.module';
 import { UserModule } from 'src/user/user.module';
+import { RolesGuard } from './guards/roles.guard';
 @Module({
 	imports: [
 		ConfigModule,
 
 		PassportModule.register({ defaultStrategy: 'jwt' }),
-
-		JwtModule.registerAsync({
-			imports: [ConfigModule],
-			inject: [ConfigService],
-			useFactory: (configService: ConfigService) => ({
-				secret: configService.get('JWT_SECRET'),
-				signOptions: {
-					expiresIn: '1d',
-				},
-			}),
+		JwtModule.register({
+			global: true,
+			secret: new ConfigService().get('JWT_SECRET'),
+			signOptions: {
+				expiresIn: "1d"
+			}
 		}),
-
 		forwardRef(() => UserModule),
 		CommonModule,
 		PrismaDbModule,
 	],
-	providers: [AuthResolver, AuthService, JwtStrategy, JwtAuthGuard],
-	exports: [AuthResolver, AuthService, JwtStrategy, JwtAuthGuard],
+	providers: [AuthResolver, AuthService, JwtStrategy, JwtAuthGuard, RolesGuard],
+	exports: [AuthResolver, AuthService, JwtStrategy, JwtAuthGuard, RolesGuard],
 })
-export class AuthModule {}
+export class AuthModule { }
