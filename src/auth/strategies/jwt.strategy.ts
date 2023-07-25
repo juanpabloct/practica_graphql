@@ -1,5 +1,5 @@
-import { PayloadToken } from './interfaces/tokenDesencrypt'
-import { BadRequestException, Injectable, UnauthorizedException } from '@nestjs/common'
+import { JwtStratyegy } from '../interfaces/jwtStrategy'
+import { Injectable, UnauthorizedException } from '@nestjs/common'
 import { ConfigService } from '@nestjs/config'
 import { PassportStrategy } from '@nestjs/passport'
 import { ExtractJwt, Strategy } from 'passport-jwt'
@@ -7,7 +7,7 @@ import { UserService } from 'src/user/user.service'
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-	constructor(configService: ConfigService, private User: UserService) {
+	constructor(configService: ConfigService, private userService: UserService) {
 		super({
 			jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
 			ignoreExpiration: false,
@@ -15,12 +15,13 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 		})
 	}
 
-	async validate(payload: PayloadToken) {
-		const { active } = await this.User.findOne(payload.id)
-		if (active) {
-			return { userId: payload.id, email: payload.email, rol: payload.RolAnduser[0].rol.name }
+	async validate(payload: JwtStratyegy) {
+		const { email, RolAnduser, id } = payload
+		const user = await this.userService.findOneWithouthActive(id)
+		if (user.active) {
+			return { id, email, RolAnduser }
 		} else {
-			throw new UnauthorizedException('User is not Autorizd ')
+			throw new UnauthorizedException('User is not Authorized')
 		}
 	}
 }
