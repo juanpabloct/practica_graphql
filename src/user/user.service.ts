@@ -5,28 +5,33 @@ import { PrismaService } from 'src/prisma-db/prisma-db.service'
 
 @Injectable()
 export class UserService {
-	constructor(private readonly prisma: PrismaService) {}
+	constructor(private readonly prisma: PrismaService) { }
 	logger = new Logger()
 	async findAll() {
-		return this.prisma.user.findMany({
-			include: {
-				_count: true,
-				RolAnduser: {
-					include: { rol: true, User: true },
-				},
-			},
-		})
+		return this.prisma.user.findMany()
 	}
 
 	async findOne(id: number) {
 		const user = await this.prisma.user.findUnique({
 			where: {
 				id,
+			}
+		})
+		if (user) {
+			return user
+		} else {
+			this.ErrorUser({ message: 'User not Found' })
+			throw new NotFoundException('User not Found')
+		}
+	}
+	async findOneWithouthActive(id: number) {
+		const user = await this.prisma.user.findUnique({
+			where: {
+				id,
 			},
-			include: {
-				RolAnduser: true,
-				_count: true,
-			},
+			select: {
+				active: true
+			}
 		})
 		if (user) {
 			return user
@@ -45,11 +50,19 @@ export class UserService {
 				include: {
 					RolAnduser: {
 						include: {
-							rol: true,
+							rol: {
+								include: {
+									RolesAndPermisos: {
+										include: {
+											Permiso: true,
+											Rol: true
+										}
+									}
+								}
+							},
 							User: true,
 						},
 					},
-					_count: true,
 				},
 			})
 		} catch (error) {
