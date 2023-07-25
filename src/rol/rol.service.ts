@@ -1,14 +1,15 @@
 import { CreateRolInput } from './dto/create-rol.input'
 import { UpdateRolInput } from './dto/update-rol.input'
 import { Injectable } from '@nestjs/common'
+import { Roles } from 'src/@generated/prisma-nestjs-graphql/prisma/roles.enum'
 import { RolCreateWithoutRolesAndPermisosInput } from 'src/@generated/prisma-nestjs-graphql/rol/rol-create-without-roles-and-permisos.input'
 import { PrismaService } from 'src/prisma-db/prisma-db.service'
 
 @Injectable()
 export class RolService {
-	constructor(private readonly prisma: PrismaService) { }
+	constructor(private readonly prisma: PrismaService) {}
 	entiti = this.prisma.rol
-	async create(name: string) {
+	async create(name: keyof typeof Roles) {
 		return this.entiti.create({ data: { name } })
 	}
 

@@ -2,11 +2,12 @@ import { CreateManyPermisosInput } from './dto/create-many-permisos'
 import { UpdatePermisoInput } from './dto/update-permiso.input'
 import { Injectable } from '@nestjs/common'
 import { PermisoCreateWithoutRolesAndPermisosInput } from 'src/@generated/prisma-nestjs-graphql/permiso/permiso-create-without-roles-and-permisos.input'
+import { Permisions } from 'src/@generated/prisma-nestjs-graphql/prisma/permisions.enum'
 import { PrismaService } from 'src/prisma-db/prisma-db.service'
 
 @Injectable()
 export class PermisosService {
-	constructor(private readonly prisma: PrismaService) { }
+	constructor(private readonly prisma: PrismaService) {}
 	entiti = this.prisma.permiso
 	async create(createPermisoInput: PermisoCreateWithoutRolesAndPermisosInput) {
 		return this.entiti.create({ data: { name: createPermisoInput.name } })
@@ -32,7 +33,7 @@ export class PermisosService {
 	async findOne(id: number) {
 		return this.entiti.findUnique({ where: { id } })
 	}
-	async findOneName(name: string) {
+	async findOneName(name: keyof typeof Permisions) {
 		return this.entiti.findUnique({ where: { name } })
 	}
 	async update(id: number, updatePermisoInput: UpdatePermisoInput) {

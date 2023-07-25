@@ -5,16 +5,16 @@ import { PrismaService } from 'src/prisma-db/prisma-db.service'
 
 @Injectable()
 export class RolAndPermisosService {
-	constructor(private readonly db: PrismaService) { }
+	constructor(private readonly db: PrismaService) {}
 	entiti = this.db.rolAndPermiso
-	async createOne({ name, permiso }: CreateRolAndPermisoOneInput) {
+	async createOne({ rol, permiso }: CreateRolAndPermisoOneInput) {
 		const findPermisoRol = await this.entiti.findFirst({
-			where: { Permiso: { name: permiso }, Rol: { name } },
+			where: { Permiso: { name: permiso }, Rol: { name: rol } },
 			include: { Permiso: true, Rol: true },
 		})
 		if (!findPermisoRol) {
 			const data = await this.entiti.create({
-				data: { Permiso: { connect: { name: permiso } }, Rol: { connect: { name } } },
+				data: { Permiso: { connect: { name: permiso } }, Rol: { connect: { name: rol } } },
 				include: { Permiso: true, Rol: true },
 			})
 			return data
@@ -22,8 +22,8 @@ export class RolAndPermisosService {
 			return findPermisoRol
 		}
 	}
-	async create({ name, permisos }: CreateRolAndPermisoInput) {
-		const data = await Promise.all(await permisos.map(async (permiso) => await this.createOne({ permiso, name })))
+	async create({ rol, permisos }: CreateRolAndPermisoInput) {
+		const data = await Promise.all(await permisos.map(async (permiso) => await this.createOne({ permiso, rol })))
 		return data
 	}
 
