@@ -1,9 +1,10 @@
-import { ObjectType, Field, Int, OmitType, PartialType } from '@nestjs/graphql';
+import { ObjectType, Field, OmitType, PartialType } from '@nestjs/graphql';
 import { IsJWT } from 'class-validator';
+import { UserMinAggregate } from 'src/@generated/prisma-nestjs-graphql/user/user-min-aggregate.output';
 import { User } from 'src/@generated/prisma-nestjs-graphql/user/user.model';
 
 @ObjectType()
-export class UserWithoutPassword extends PartialType(OmitType(User, ["password"])) {}
+export class UserWithoutPassword extends PartialType(OmitType(UserMinAggregate, ["password"])) { }
 
 @ObjectType()
 export class UserObject extends PartialType(UserWithoutPassword) {
