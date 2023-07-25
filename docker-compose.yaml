@@ -5,10 +5,10 @@ services:
     image: postgres:alpine
     restart: always
     ports:
-      - '${DB_PORT}:5432'
+      - '${PORT_DB}:5432'
     environment:
-      - POSTGRES_PASSWORD=${DB_PASSWORD}
-      - POSTGRES_DB=${DB_NAME}
-      - POSTGRES_USER=${USER_NAME}
+      - POSTGRES_PASSWORD=${PASSWORD_DB}
+      - POSTGRES_DB=${NAME_DB}
+      - POSTGRES_USER=${USER_DB}
     volumes:
       - ./postgres:/var/lib/postgresql/data"
