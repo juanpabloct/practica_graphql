@@ -6,7 +6,7 @@ import { PrismaService } from 'src/prisma-db/prisma-db.service'
 
 @Injectable()
 export class PermisosService {
-	constructor(private readonly prisma: PrismaService) {}
+	constructor(private readonly prisma: PrismaService) { }
 	entiti = this.prisma.permiso
 	async create(createPermisoInput: PermisoCreateWithoutRolesAndPermisosInput) {
 		return this.entiti.create({ data: { name: createPermisoInput.name } })
@@ -33,17 +33,16 @@ export class PermisosService {
 		return this.entiti.findUnique({ where: { id } })
 	}
 	async findOneName(name: string) {
-		return this.entiti.findUnique({ where: { name }, include: { _count: true, RolesAndPermisos: true } })
+		return this.entiti.findUnique({ where: { name } })
 	}
 	async update(id: number, updatePermisoInput: UpdatePermisoInput) {
 		return this.entiti.update({
 			where: { id },
 			data: { name: updatePermisoInput.name },
-			include: { _count: true, RolesAndPermisos: true },
 		})
 	}
 
 	remove(id: number) {
-		return this.entiti.delete({ where: { id }, include: { RolesAndPermisos: true } })
+		return this.entiti.delete({ where: { id } })
 	}
 }
