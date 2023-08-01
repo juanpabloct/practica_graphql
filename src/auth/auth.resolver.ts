@@ -4,7 +4,6 @@ import { SingOffInput } from './inputs/singOff.input'
 import { SingOffObject } from './interfaces/singOffObject'
 import { UsePipes } from '@nestjs/common'
 import { Args, Mutation, Resolver } from '@nestjs/graphql'
-import { RolAnduser } from 'src/@generated/prisma-nestjs-graphql/rol-anduser/rol-anduser.model'
 import { CreateUserInput } from 'src/auth/inputs/create-user.input'
 import { EncryptPasswordPipe } from 'src/common/encript-password/encrypt-password.pipe'
 import { Login } from 'src/user/entities/user.entity'
@@ -14,7 +13,7 @@ export class AuthResolver {
 	constructor(private readonly authService: AuthService) {}
 
 	@UsePipes(EncryptPasswordPipe)
-	@Mutation(() => RolAnduser)
+	@Mutation(() => SingOffObject)
 	async singUp(@Args('SingUp') createUserInput: CreateUserInput) {
 		const newUser = await this.authService.SingUp(createUserInput)
 		return newUser
