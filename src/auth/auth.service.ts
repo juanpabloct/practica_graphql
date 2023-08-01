@@ -18,7 +18,7 @@ export class AuthService {
 	entiti = this.prisma.rolAnduser
 	logger = new Logger()
 
-	async SingUp({ Rol, email, password }: CreateUserInput): Promise<RolAnduser> {
+	async SingUp({ Rol, email, password }: CreateUserInput) {
 		try {
 			const newUser = await this.entiti.create({
 				data: {
@@ -40,8 +40,17 @@ export class AuthService {
 					},
 				},
 				include: {
-					rol: true,
-					User: true,
+					rol: {select:{
+						name:true,
+						id:true,
+					}},
+					User: {
+						select:{
+							active:true, 
+							email:true, 
+							id:true, 
+						}
+					},
 				},
 			})
 			return newUser
