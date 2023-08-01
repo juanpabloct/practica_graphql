@@ -10,8 +10,8 @@ export class RolResolver {
 	constructor(private readonly rolService: RolService) { }
 
 	@Mutation(() => RolMinAggregate)
-	createRol(@Args('createRolInput') { name }: RolCreateWithoutRolesAndPermisosInput) {
-		return this.rolService.create(name)
+	async createRol(@Args('createRolInput') data: CreateRolInput) {
+		return await this.rolService.create(data)
 	}
 
 	@Query(() => [RolMinAggregate], { name: 'roles' })
