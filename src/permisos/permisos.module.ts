@@ -6,5 +6,6 @@ import { PrismaDbModule } from 'src/prisma-db/prisma-db.module'
 @Module({
 	providers: [PermisosResolver, PermisosService],
 	imports: [PrismaDbModule],
+	exports: [PermisosService]
 })
-export class PermisosModule {}
+export class PermisosModule { }
