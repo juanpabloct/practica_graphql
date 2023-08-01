@@ -1,10 +1,10 @@
 import { Field, InputType } from '@nestjs/graphql'
-import { Permisions } from '@prisma/client'
 import { IsArray } from 'class-validator'
+import { Permisions } from 'src/@generated/prisma-nestjs-graphql/prisma/permisions.enum'
 
 @InputType()
 export class CreateManyPermisosInput {
-	@Field(() => [String], { description: 'Array of permisos' })
+	@Field(() => [Permisions], { description: 'Array of permisos' })
 	@IsArray()
 	data: Permisions[]
 }
