@@ -29,17 +29,19 @@ model User {
   RolAnduser RolAnduser[]
 }
 
+enum Roles {
+  ADMIN
+  USER
+}
+
 model Rol {
   id               Int             @id @default(autoincrement())
   /// @Validator.MinLength(1)
-  name             Roles          @unique @default(USER)
+  name             Roles           @unique @default(USER)
   RolesAndPermisos RolAndPermiso[]
   RolAnduser       RolAnduser[]
 }
-enum Roles {
-  ADMIN 
-	USER
-}
+
 model RolAndPermiso {
   id        Int      @id @default(autoincrement())
   Rol       Rol?     @relation(fields: [rolId], references: [id])
@@ -54,17 +56,19 @@ model Permiso {
   id               Int             @id @default(autoincrement())
   /// @Validator.MinLength(3)
   /// @Validator.IsString()
-  name             Permisions          @unique
+  name             Permisions      @unique @default(READ)
   RolesAndPermisos RolAndPermiso[]
 }
+
 enum Permisions {
-	CREATE
-	UPDATE
-	DELETE
-	READ
-	READ_ALL
-	READ_ANY
+  CREATE
+  UPDATE
+  DELETE
+  READ
+  READ_ALL
+  READ_ANY
 }
+
 model RolAnduser {
   id     Int  @id @default(autoincrement())
   User   User @relation(fields: [userId], references: [id])
