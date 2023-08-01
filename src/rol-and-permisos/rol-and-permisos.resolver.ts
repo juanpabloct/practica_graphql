@@ -11,7 +11,7 @@ export class RolAndPermisosResolver {
 
 	@Mutation(() => [RolAndPermiso])
 	async createRolAndPermiso(
-		@Args('createRolAndPermiso') createRolAndPermisoInput: CreateRolAndPermisoInput,
+		@Args('CreateRolWithPermisos') createRolAndPermisoInput: CreateRolAndPermisoInput,
 	) {
 		const data = await this.rolAndPermisosService.create(createRolAndPermisoInput)
 		return data

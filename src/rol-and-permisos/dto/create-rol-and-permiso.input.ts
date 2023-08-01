@@ -5,22 +5,22 @@ import { Roles } from 'src/@generated/prisma-nestjs-graphql/prisma/roles.enum'
 
 @InputType()
 export class CreateRolAndPermisoInput {
-	@Field(() => [String])
+	@Field(() => [Permisions])
 	@IsArray()
 	@ArrayMinSize(0)
 	permisos: Permisions[]
 
-	@Field(() => String)
+	@Field(() => Roles)
 	@MinLength(1)
 	rol: keyof typeof Roles
 }
 @InputType()
-export class CreateRolAndPermisoOneInput {
-	@Field(() => String)
+export class CreateRolAndOnePermisoInput {
+	@Field(() => Permisions)
 	@IsString()
-	permiso: keyof typeof Permisions
+	permiso: Permisions
 
-	@Field(() => String)
+	@Field(() => Roles)
 	@MinLength(1)
-	rol: keyof typeof Roles
+	rol: Roles
 }

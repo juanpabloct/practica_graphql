@@ -1,7 +1,10 @@
 import { InputType, Int, Field } from '@nestjs/graphql';
+import { IsNotEmpty } from 'class-validator';
+import { Roles } from 'src/@generated/prisma-nestjs-graphql/prisma/roles.enum';
 
 @InputType()
 export class CreateRolInput {
-  @Field(() => Int, { description: 'Example field (placeholder)' })
-  exampleField: number;
+  @Field(() => Roles, { description: 'field rol' })
+  @IsNotEmpty()
+  name: Roles;
 }
